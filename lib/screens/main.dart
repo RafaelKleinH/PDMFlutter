@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:pdmapp/components/textfield.dart';
 
 void main() => runApp(MeuCupertinoApp());
@@ -11,6 +12,7 @@ class MeuCupertinoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'Cupertino App',
+      debugShowCheckedModeBanner: false,
       home: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           backgroundColor: CupertinoColors.systemGrey.withOpacity(0),

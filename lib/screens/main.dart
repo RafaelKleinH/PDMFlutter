@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pdmapp/components/textfield.dart';
 import 'package:pdmapp/screens/register.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'home.dart';
 
@@ -97,11 +100,12 @@ class MeuCupertinoApp extends StatelessWidget {
                             debugPrint(alertText.toString());
 
                             if (alertText == null) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => homeView(),
-                                ),
-                              );
+                              login(usernameTextController.text,passwordTextController.text);
+                              //Navigator.of(context).push(
+                               // MaterialPageRoute(
+                              //    builder: (context) => chamarWeb(),
+                              //  ),
+                             // );
                             } else {
                               showDialog<String>(
                                 context: context,
@@ -155,4 +159,15 @@ class MeuCupertinoApp extends StatelessWidget {
     return usernameTextController.text.isNotEmpty &&
         passwordTextController.text.isNotEmpty;
   }
+}
+
+Future login(usuario,senha) async {
+  final resposta = await http.post(
+    Uri.parse("http://200.19.1.18/20181GR.TII_I0084/flutter/inse_login.php"),
+    body:{
+     "usuario": usuario,
+     "senha": senha,
+    },
+    );
+  debugPrint(resposta.body);
 }

@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pdmapp/components/textField.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class registerView extends StatelessWidget {
   final usernameTextController = TextEditingController();
@@ -113,7 +116,7 @@ class registerView extends StatelessWidget {
                                 : "Senhas devem ser iguais.";
                           }
                           if (alertText == null) {
-                            //TO DO POST...
+                            cadastrar(usernameTextController.text,passwordTextController.text);//TO DO POST...
                           } else {
                             showDialog<String>(
                               context: context,
@@ -153,4 +156,15 @@ class registerView extends StatelessWidget {
   bool isPasswordsEquals() {
     return passwordTextController.text == confirmPasswordTextController.text;
   }
+}
+
+Future cadastrar(usuario,senha) async {
+  final resposta = await http.post(
+    Uri.parse("http://200.19.1.18/20181GR.TII_I0084/flutter/inse_login.php"),
+    body:{
+     "usuario": usuario,
+     "senha": senha,
+    },
+    );
+  debugPrint(resposta.body);
 }

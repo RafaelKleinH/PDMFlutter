@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
 class homeView extends StatefulWidget {
-  homeView({Key? key}) : super(key: key);
+  final int id_usuario;
+  homeView({Key? key, required this.id_usuario}) : super(key: key);
+
 
   @override
   _homeViewState createState() => _homeViewState();
@@ -52,8 +54,6 @@ class _homeTabState extends State<homeTab> {
 }
 
 class SettingsTab extends StatelessWidget {
-  const SettingsTab({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Center(

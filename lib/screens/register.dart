@@ -116,7 +116,8 @@ class registerView extends StatelessWidget {
                                 : "Senhas devem ser iguais.";
                           }
                           if (alertText == null) {
-                            cadastrar(usernameTextController.text,passwordTextController.text);//TO DO POST...
+                            cadastrar(context,usernameTextController.text,
+                                passwordTextController.text); //TO DO POST...
                           } else {
                             showDialog<String>(
                               context: context,
@@ -158,13 +159,32 @@ class registerView extends StatelessWidget {
   }
 }
 
-Future cadastrar(usuario,senha) async {
+Future cadastrar(context,usuario, senha) async {
   final resposta = await http.post(
-    Uri.parse("http://200.19.1.18/20181GR.TII_I0084/flutter/inse_login.php"),
-    body:{
-     "usuario": usuario,
-     "senha": senha,
+    Uri.parse(
+        "http://200.19.1.18/20181GR.TII_I0084/flutter/inse_cadastrar.php"),
+    body: {
+      "usuario": usuario,
+      "senha": senha,
     },
+  );
+  var jsonData = jsonDecode(resposta.body);
+  if (jsonData=="ok"){
+    // Aviso "Cadastrado"
+    Navigator.pop(context, 'ok');
+  } else if (jsonData=="nop"){
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text("Opss!"),
+        content: const Text("Usuário já existente"),
+        actions: <Widget>[
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () => Navigator.pop(context, "OK"),
+          )
+        ],
+      ),
     );
-  debugPrint(resposta.body);
+  } 
 }

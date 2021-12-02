@@ -100,12 +100,13 @@ class MeuCupertinoApp extends StatelessWidget {
                             debugPrint(alertText.toString());
 
                             if (alertText == null) {
-                              login(usernameTextController.text,passwordTextController.text);
+                              login(context, usernameTextController.text,
+                                  passwordTextController.text);
                               //Navigator.of(context).push(
-                               // MaterialPageRoute(
+                              // MaterialPageRoute(
                               //    builder: (context) => chamarWeb(),
                               //  ),
-                             // );
+                              // );
                             } else {
                               showDialog<String>(
                                 context: context,
@@ -161,13 +162,47 @@ class MeuCupertinoApp extends StatelessWidget {
   }
 }
 
-Future login(usuario,senha) async {
+Future login(context, usuario, senha) async {
   final resposta = await http.post(
     Uri.parse("http://200.19.1.18/20181GR.TII_I0084/flutter/inse_login.php"),
-    body:{
-     "usuario": usuario,
-     "senha": senha,
+    body: {
+      "usuario": usuario,
+      "senha": senha,
     },
+  );
+  var jsonData = jsonDecode(resposta.body);
+  if (jsonData == "usuario") {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text("Opss!"),
+        content: const Text("Usuário incorreto"),
+        actions: <Widget>[
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () => Navigator.pop(context, "OK"),
+          )
+        ],
+      ),
     );
-  debugPrint(resposta.body);
+  } else if (jsonData == "senha") {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text("Opss!"),
+        content: const Text("Senha incorreta"),
+        actions: <Widget>[
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () => Navigator.pop(context, "OK"),
+          )
+        ],
+      ),
+    );
+  } else {
+    int id = int.parse(jsonData);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => homeView(id_usuario:id)),
+    );
+  }
 }

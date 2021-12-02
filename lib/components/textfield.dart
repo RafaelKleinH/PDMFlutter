@@ -6,12 +6,15 @@ class bbtextfield extends StatelessWidget {
   final bool isPassword;
   final String placeholder;
   final TextEditingController controller;
+  final bool enabled;
 
-  bbtextfield(this.isPassword, this.placeholder, this.controller);
+  bbtextfield(this.isPassword, this.placeholder, this.controller,
+      {this.enabled = false});
 
   @override
   Widget build(BuildContext context) {
     return CupertinoTextField.borderless(
+      readOnly: enabled,
       autocorrect: false,
       obscureText: isPassword,
       placeholder: placeholder,

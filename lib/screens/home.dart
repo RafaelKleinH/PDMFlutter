@@ -6,7 +6,8 @@ import 'homeScreens/homeTab.dart';
 import 'homeScreens/settingsTab.dart';
 
 class homeView extends StatefulWidget {
-  homeView({Key? key}) : super(key: key);
+  final int id_usuario;
+  homeView({Key? key, required this.id_usuario}) : super(key: key);
 
   @override
   _homeViewState createState() => _homeViewState();
@@ -14,10 +15,10 @@ class homeView extends StatefulWidget {
 
 class _homeViewState extends State<homeView> {
   List<Widget> _tabs = [
-    homeTab("Jurandir"),
+    homeTab("aa"),
     createBookTab(),
     favoritesTab(),
-    SettingsTab("Rafael"),
+    SettingsTab("aa"),
   ];
 
   @override

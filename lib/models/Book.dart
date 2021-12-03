@@ -5,8 +5,19 @@ class Book {
   final String? date;
   final String? gender;
   final String? id_user;
+  String? read;
+  String? favorite;
 
-  Book({this.id, this.name, this.author, this.date, this.gender, this.id_user});
+  Book({
+    this.id,
+    this.name,
+    this.author,
+    this.date,
+    this.gender,
+    this.id_user,
+    this.read,
+    this.favorite,
+  });
 
   @override
   String toString() {
@@ -29,6 +40,8 @@ class Book {
       date: json['c_data_livro'] as String?,
       gender: json['c_genero_livro'] as String?,
       id_user: json['c_id_usuario'] as String?,
+      read: json['c_livro_lido'] as String?,
+      favorite: json['c_livro_favorito'] as String?,
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pdmapp/components/textfield.dart';
+import 'package:pdmapp/models/User.dart';
 import 'package:pdmapp/screens/register.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -201,9 +202,11 @@ Future login(context, usuario, senha) async {
       ),
     );
   } else {
-    int id = int.parse(jsonData);
+    var json = jsonDecode(resposta.body);
+    print(json);
+    User user = User.fromJson(json);
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => homeView(id_usuario: id)),
+      MaterialPageRoute(builder: (context) => homeView(user: user)),
     );
   }
 }

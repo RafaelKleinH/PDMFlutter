@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pdmapp/models/User.dart';
 import 'package:pdmapp/screens/homeScreens/createNewBook.dart';
 import 'package:pdmapp/screens/homeScreens/favoriteBooks.dart';
 
@@ -6,20 +7,15 @@ import 'homeScreens/homeTab.dart';
 import 'homeScreens/settingsTab.dart';
 
 class homeView extends StatefulWidget {
-  final int id_usuario;
-  homeView({Key? key, required this.id_usuario}) : super(key: key);
-
+  final User user;
+  homeView({required this.user});
   @override
-  _homeViewState createState() => _homeViewState();
+  _homeViewState createState() => _homeViewState(user);
 }
 
 class _homeViewState extends State<homeView> {
-  List<Widget> _tabs = [
-    homeTab("aa"),
-    createBookTab(),
-    favoritesTab(),
-    SettingsTab("aa"),
-  ];
+  final User user;
+  _homeViewState(this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +46,12 @@ class _homeViewState extends State<homeView> {
             ],
           ),
           tabBuilder: (BuildContext context, index) {
+            List<Widget> _tabs = [
+              homeTab(user),
+              createBookTab(user),
+              favoritesTab(user),
+              SettingsTab("aa"),
+            ];
             return _tabs[index];
           }),
     );

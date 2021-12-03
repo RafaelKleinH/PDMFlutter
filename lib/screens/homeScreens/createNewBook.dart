@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:pdmapp/components/textfield.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:pdmapp/models/User.dart';
 
 class createBookTab extends StatefulWidget {
-  createBookTab({Key? key}) : super(key: key);
-
+  User user;
+  createBookTab(this.user);
   @override
-  _createBookTabState createState() => _createBookTabState();
+  _createBookTabState createState() => _createBookTabState(user);
 }
 
 class _createBookTabState extends State<createBookTab> {
@@ -20,6 +21,9 @@ class _createBookTabState extends State<createBookTab> {
   final bookAuthorTextController = TextEditingController();
   final bookYearTextController = TextEditingController();
   DateTime? _chosenDateTime;
+  User user;
+
+  _createBookTabState(this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +155,7 @@ class _createBookTabState extends State<createBookTab> {
                                 bookAuthorTextController.text,
                                 bookGenderTextController.text,
                                 bookYearTextController.text,
-                                "0");
+                                user.i_id_usuario.toString());
                           }
                         } else {
                           showDialog<String>(

@@ -171,6 +171,7 @@ Future login(context, usuario, senha) async {
     },
   );
   var jsonData = jsonDecode(resposta.body);
+
   if (jsonData == "usuario") {
     showDialog<String>(
       context: context,
@@ -201,8 +202,8 @@ Future login(context, usuario, senha) async {
     );
   } else {
     int id = int.parse(jsonData);
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => homeView(id_usuario:id)),
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => homeView(id_usuario: id)),
     );
   }
 }

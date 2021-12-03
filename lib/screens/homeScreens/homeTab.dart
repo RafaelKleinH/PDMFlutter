@@ -1,7 +1,11 @@
+import 'package:pdmapp/models/Book.dart';
+import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pdmapp/models/Book.dart';
-
+import 'package:pdmapp/components/textfield.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import '../main.dart';
 
 class homeTab extends StatefulWidget {
@@ -15,7 +19,7 @@ class homeTab extends StatefulWidget {
 
 class _homeTabState extends State<homeTab> {
   String name;
-
+  List<dynamic> books = [];
   _homeTabState(this.name);
 
   @override
@@ -25,7 +29,8 @@ class _homeTabState extends State<homeTab> {
       color: CupertinoColors.darkBackgroundGray,
       child: FutureBuilder<List<Book>>(
         initialData: [],
-        future: login(context, "aa", "aa").then((value) {
+        future: bookList(context).then((value) {
+          books = value;
           return value;
         }),
         builder: (context, snapshot) {
@@ -47,34 +52,21 @@ class _homeTabState extends State<homeTab> {
             case ConnectionState.active:
               break;
             case ConnectionState.done:
-              final List<Book> books = [
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-              ];
-              return ListView.builder(
-                padding: EdgeInsets.all(6.0),
-                itemBuilder: (context, index) {
-                  final Book book = books[index];
-                  return _BookItem(book);
-                },
-                itemCount: books.length,
-              );
+              if (books.isNotEmpty) {
+                return ListView.builder(
+                  padding: EdgeInsets.all(6.0),
+                  itemBuilder: (context, index) {
+                    final Book book = books[index];
+                    return _BookItem(book);
+                  },
+                  itemCount: books.length,
+                );
+              } else {
+                return Center(
+                  child: Text("Nenhum livro na lista"),
+                );
+              }
+
               break;
           }
           return Text('Unknown error');
@@ -95,7 +87,7 @@ class _BookItem extends StatelessWidget {
       color: Colors.white70,
       child: ListTile(
         title: Text(
-          book.name,
+          book.name ?? "",
           style: TextStyle(
             fontSize: 24.0,
           ),
@@ -108,5 +100,22 @@ class _BookItem extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Future bookList(context) async {
+  final resposta = await http.post(
+    Uri.parse("http://200.19.1.18/20181GR.TII_I0084/flutter/livro_listar.php"),
+    body: {'id_usuario': "0"},
+  );
+
+  if (resposta.statusCode == 200) {
+    final data = jsonDecode(resposta.body);
+    print(data);
+    final List<Book> book = [];
+    for (Map i in data) {
+      book.add(Book.fromJson(i));
+    }
+    return book;
   }
 }

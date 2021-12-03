@@ -1,8 +1,11 @@
 // ignore: file_names
+import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pdmapp/components/textfield.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class createBookTab extends StatefulWidget {
   createBookTab({Key? key}) : super(key: key);
@@ -140,7 +143,16 @@ class _createBookTabState extends State<createBookTab> {
                         debugPrint(alertText.toString());
 
                         if (alertText == null) {
-                          //Todo post do livro
+                          if (_chosenDateTime != null) {
+                            print(_chosenDateTime!);
+                            registerBook(
+                                context,
+                                bookNameTextController.text,
+                                bookAuthorTextController.text,
+                                bookGenderTextController.text,
+                                bookYearTextController.text,
+                                "0");
+                          }
                         } else {
                           showDialog<String>(
                             context: context,
@@ -210,5 +222,56 @@ class _createBookTabState extends State<createBookTab> {
         bookAuthorTextController.text.isNotEmpty &&
         bookGenderTextController.text.isNotEmpty &&
         bookYearTextController.text.isNotEmpty;
+  }
+}
+
+Future registerBook(context, String bookName, String bookAuthor,
+    String bookGender, String bookYear, String userId) async {
+  final resposta = await http.post(
+    Uri.parse(
+        "http://200.19.1.18/20181GR.TII_I0084/flutter/livro_cadastrar.php"),
+    body: {
+      "nome_livro": bookName,
+      "autor_livro": bookAuthor,
+      "data_livro": bookYear,
+      "genero_livro": bookGender,
+      "id_usuario": userId,
+    },
+  );
+  var response = resposta.statusCode;
+  print(bookName);
+  print(bookAuthor);
+  print(bookYear);
+  print(bookGender);
+  print(userId);
+  print(response);
+  if (response == 200 || response == 201) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text("Foi!"),
+        content: const Text("Livro criado"),
+        actions: <Widget>[
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () => Navigator.pop(context, "OK"),
+          )
+        ],
+      ),
+    );
+  } else {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text("Opss!"),
+        content: const Text("Senha incorreta"),
+        actions: <Widget>[
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () => Navigator.pop(context, "OK"),
+          )
+        ],
+      ),
+    );
   }
 }

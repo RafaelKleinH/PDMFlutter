@@ -45,26 +45,7 @@ class _favoritesState extends State<favoritesTab> {
             case ConnectionState.active:
               break;
             case ConnectionState.done:
-              final List<Book> books = [
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-                Book(0, "Policarpio", "author", "date", "gender"),
-              ];
+              final List<Book> books = [];
               return ListView.builder(
                 padding: EdgeInsets.all(6.0),
                 itemBuilder: (context, index) {
@@ -91,29 +72,58 @@ class _BookItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: GlassContainer(
-        blur: 3,
-        shadowStrength: 10,
-        opacity: 0.2,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(18, 32, 18, 18),
-              child: Text("Titulo:" + book.name),
-            ),
-            Padding(
-              padding: EdgeInsets.all(18),
-              child: Text("Autor:" + book.author),
-            ),
-            Padding(
-              padding: EdgeInsets.all(18),
-              child: Text("Genero:" + book.gender),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(18, 18, 18, 32),
-              child: Text("Lanácmento:" + book.date),
-            ),
-          ],
+      child: Card(
+        color: Colors.white70,
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(18, 32, 18, 0),
+                child: Text(
+                  book.name!,
+                  style: TextStyle(
+                    color: CupertinoColors.darkBackgroundGray,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 4, left: 18, right: 18),
+                child: Text(
+                  book.author!,
+                  style: TextStyle(
+                    color: CupertinoColors.darkBackgroundGray,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w200,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(18, 18, 18, 0),
+                child: Text(
+                  book.gender!,
+                  style: TextStyle(
+                    color: CupertinoColors.darkBackgroundGray,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w200,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(18, 18, 18, 32),
+                child: Text(
+                  book.date!,
+                  style: TextStyle(
+                    color: CupertinoColors.darkBackgroundGray,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w200,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
